@@ -1,0 +1,49 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>Home Page</title> 
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!-- Bootstrap JavaScript requires jQuery -->
+    <script src="/public/js/jquery.js"></script>
+    <script src="/public/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head> 
+
+<body> 
+    <div class="container mt-4">
+        <!-- Search Bar -->
+        <form action="/" method="GET" class="mb-4" id="searchForm">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search for recipes..." aria-label="Search for recipes" value="<%= searchQuery %>">
+                <button class="btn btn-primary" type="submit" id="searchButton">Search</button>
+            </div>
+        </form>
+
+        <!-- Loader -->
+        <div class="loader" id="loader"></div>
+
+        <!-- Display Recipes -->
+        <% if (data && data.results) { %>
+            <div class="row" id="recipeContainer">
+                <% data.results.forEach(recipe => { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="<%= recipe.thumbnail_url %>" class="card-img-top" alt="<%= recipe.name %>">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= recipe.name %></h5>
+                                <p class="card-text">Description or details about the recipe.</p>
+                                <!-- You can add more details about the recipe here -->
+                                <a href="#" class="btn btn-primary">View Recipe</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <p id="noRecipesMessage">No recipes found</p>
+        <% } %>
+    </div>
+
+    <script src="/public/js/loader.js"></script> <!-- Load JavaScript file for controlling loader -->
+</body> 
+</html>
