@@ -12,12 +12,14 @@
 <body> 
     <div class="container mt-4">
         <!-- Search Bar -->
-        <form action="/" method="GET" class="mb-4" id="searchForm">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Search for recipes..." aria-label="Search for recipes" value="<%= searchQuery %>">
-                <button class="btn btn-primary" type="submit" id="searchButton">Search</button>
-            </div>
-        </form>
+        <div class="search-bar-container"> <!-- Add search-bar-container class here -->
+            <form action="/" method="GET" class="mb-4" id="searchForm">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search for recipes..." aria-label="Search for recipes" value="<%= searchQuery %>">
+                    <button class="btn btn-primary" type="submit" id="searchButton">Search</button>
+                </div>
+            </form>
+        </div>
 
         <!-- Loader -->
         <div class="loader" id="loader"></div>
@@ -25,6 +27,7 @@
         <!-- Display Recipes -->
         <% if (data && data.results) { %>
             <div class="row" id="recipeContainer">
+                
                 <% data.results.forEach(recipe => { %>
                     <div class="col-md-4 mb-4">
                         <div class="card">
@@ -33,7 +36,7 @@
                                 <h5 class="card-title"><%= recipe.name %></h5>
                                 <p class="card-text">Description or details about the recipe.</p>
                                 <!-- You can add more details about the recipe here -->
-                                <a href="#" class="btn btn-primary">View Recipe</a>
+                                <a  href="/recipe/<%= recipe.id %> " class="btn btn-primary">View Recipe</a>
                             </div>
                         </div>
                     </div>

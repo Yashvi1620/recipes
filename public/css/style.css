@@ -3,8 +3,15 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.search-bar-container {
+  background-image: url('../images/Herbs\ and\ spices\ over\ black.jpeg'); /* Add background image */
+  background-size: cover; 
+  padding: 80px; 
+  margin-bottom: 40px;
+}
+
 .recipe-container {
-  margin-top: 20px;
+  margin-top: 80px;
 }
 
 .card {
@@ -74,21 +81,22 @@ body {
     font-size: 12px;
   }
 }
+
 .loader {
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    width: 50px;
-    height: 50px;
-    animation: spin 5s linear infinite;
-    display: none; /* Initially hidden */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #9411d1;
+  width: 50px;
+  height: 50px;
+  animation: spin 5s linear infinite;
+  display: none; /* Initially hidden */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
