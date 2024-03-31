@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const mime = require("mime");
+const xss = require('xss');
 
 app.use(
   express.static(__dirname + "/public", {
@@ -18,48 +19,50 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 app.get("/", async (req, res) => {
-  try {
-    let searchQuery = req.query.q || "";
-    let currentPage = parseInt(req.query.page) || 1;
-    const pageSize = 9;
-
-    const options = {
-      method: "GET",
-      url: "https://tasty.p.rapidapi.com/recipes/list",
-      params: {
-        from: (currentPage - 1) * pageSize,
-        size: pageSize,
-        tags: "under_30_minutes",
-        q: searchQuery,
-      },
-      headers: {
-        "X-RapidAPI-Key": "6202324d62msh19baa95b62cbbb3p172668jsnee482b887dbd",
-        "X-RapidAPI-Host": "tasty.p.rapidapi.com",
-      },
-    };
-
-    const response = await axios.request(options);
-
-    if (response.data) {
-      const data = response.data;
-
-      const totalPages = Math.ceil(data.total_items / pageSize);
-
-      res.render("home", {
-        data: data,
-        searchQuery: searchQuery,
-        currentPage: currentPage,
-        totalPages: totalPages,
-      });
-    } else {
-      console.error("API response did not contain data");
-      res.status(500).send("API response did not contain data");
+    try {
+      // Sanitize the search query to prevent XSS exploits
+      let searchQuery = xss(req.query.q) || "";
+      let currentPage = parseInt(req.query.page) || 1;
+      const pageSize = 9;
+  
+      const options = {
+        method: "GET",
+        url: "https://tasty.p.rapidapi.com/recipes/list",
+        params: {
+          from: (currentPage - 1) * pageSize,
+          size: pageSize,
+          tags: "under_30_minutes",
+          q: searchQuery,
+        },
+        headers: {
+          "X-RapidAPI-Key": "6202324d62msh19baa95b62cbbb3p172668jsnee482b887dbd",
+          "X-RapidAPI-Host": "tasty.p.rapidapi.com",
+        },
+      };
+  
+      const response = await axios.request(options);
+  
+      if (response.data) {
+        const data = response.data;
+  
+        const totalPages = Math.ceil(data.total_items / pageSize);
+  
+        res.render("home", {
+          data: data,
+          searchQuery: searchQuery,
+          currentPage: currentPage,
+          totalPages: totalPages,
+        });
+      } else {
+        console.error("API response did not contain data");
+        res.status(500).send("API response did not contain data");
+      }
+    } catch (error) {
+      console.error("Error fetching API:", error);
+      res.status(500).send("An error occurred while fetching data from the API");
     }
-  } catch (error) {
-    console.error("Error fetching API:", error);
-    res.status(500).send("An error occurred while fetching data from the API");
-  }
-});
+  });
+  
 
 app.get("/recipe/:id", async (req, res) => {
   try {

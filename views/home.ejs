@@ -40,28 +40,23 @@
       <div class="loader" id="loader"></div>
 
       <!-- Display Recipes -->
-      <% if (data && data.results) { %>
-      <div class="row" id="recipeContainer">
-        <% data.results.forEach(recipe => { %>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <img
-              src="<%= recipe.thumbnail_url %>"
-              class="card-img-top"
-              alt="<%= recipe.name %>"
-            />
-            <div class="card-body">
-              <h5 class="card-title"><%= recipe.name %></h5>
-              <p class="card-text">Description or details about the recipe.</p>
-
-              <a href="/recipe/<%= recipe.id %>" class="btn btn-primary"
-                >View Recipe</a
-              >
+      <% if (data && data.results && data.results.length > 0) { %>
+        <!-- Display Recipes -->
+        <div class="row" id="recipeContainer">
+          <% data.results.forEach(recipe => { %>
+            <div class="col-md-4 mb-4">
+              <!-- Recipe Card -->
+              <div class="card">
+                <img src="<%= recipe.thumbnail_url %>" class="card-img-top" alt="<%= recipe.name %>">
+                <div class="card-body">
+                  <h5 class="card-title"><%= recipe.name %></h5>
+                  <p class="card-text">Description or details about the recipe.</p>
+                  <a href="/recipe/<%= recipe.id %>" class="btn btn-primary">View Recipe</a>
+                </div>
+              </div>
             </div>
-          </div>
+          <% }); %>
         </div>
-        <% }); %>
-      </div>
       <!-- Pagination -->
       <div class="pagination-container">
         <nav aria-label="Recipe Pagination">
@@ -95,8 +90,11 @@
         </nav>
       </div>
       <% } else { %>
-      <p id="noRecipesMessage">No recipes found</p>
-      <% } %>
+        <!-- No Recipes Found Message -->
+        <div class="alert alert-info" role="alert">
+          No recipes found.
+        </div>
+        <% } %>
     </div>
 
     <script src="/public/js/loader.js"></script>
