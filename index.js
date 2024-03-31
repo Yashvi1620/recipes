@@ -21,7 +21,7 @@ app.get("/", async (req, res) => {
   try {
     let searchQuery = req.query.q || "";
     let currentPage = parseInt(req.query.page) || 1;
-    const pageSize = 10;
+    const pageSize = 9;
 
     const options = {
       method: "GET",
