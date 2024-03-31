@@ -1,102 +1,99 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Home Page</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css" />
-    <script src="/public/js/jquery.js"></script>
-    <script src="/public/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="./css/style.css" />
-    <style>
-      .pagination-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-      }
-    </style>
-  </head>
+<head>
+  <title>Home Page</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <body>
-    <div class="container mt-4">
-      <!-- Search Bar -->
-      <div class="search-bar-container">
-        <form action="/" method="GET" class="mb-4" id="searchForm">
-          <div class="input-group">
-            <input
-              type="text"
-              name="q"
-              class="form-control"
-              placeholder="Search for recipes..."
-              aria-label="Search for recipes"
-              value="<%= searchQuery %>"
-            />
-            <button class="btn btn-primary" type="submit" id="searchButton">
-              Search
-            </button>
-          </div>
-        </form>
-      </div>
+  
+</head>
 
-      <!-- Loader -->
-      <div class="loader" id="loader"></div>
-
-      <!-- Display Recipes -->
-      <% if (data && data.results && data.results.length > 0) { %>
-        <!-- Display Recipes -->
-        <div class="row" id="recipeContainer">
-          <% data.results.forEach(recipe => { %>
-            <div class="col-md-4 mb-4">
-              <!-- Recipe Card -->
-              <div class="card">
-                <img src="<%= recipe.thumbnail_url %>" class="card-img-top" alt="<%= recipe.name %>">
-                <div class="card-body">
-                  <h5 class="card-title"><%= recipe.name %></h5>
-                  <p class="card-text">Description or details about the recipe.</p>
-                  <a href="/recipe/<%= recipe.id %>" class="btn btn-primary">View Recipe</a>
-                </div>
-              </div>
-            </div>
-          <% }); %>
+<body>
+  <div class="container mt-4">
+    <!-- Search Bar -->
+    <div class="search-bar-container">
+      <form action="/" method="GET" class="mb-4" id="searchForm">
+        <div class="input-group">
+          <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Search for recipes..."
+            aria-label="Search for recipes"
+            value="<%= searchQuery %>"
+          />
+          <button class="btn" type="submit" id="searchButton">
+            <i class="fa fa-search"></i>
+          </button>
         </div>
-      <!-- Pagination -->
-      <div class="pagination-container">
-        <nav aria-label="Recipe Pagination">
-          <ul class="pagination">
-            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-              <a
-                class="page-link"
-                href="?page=<%= currentPage - 1 %>"
-                aria-label="Previous"
-              >
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <% for (let i = 1; i <= totalPages; i++) { %>
-            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-            </li>
-            <% } %>
-            <li
-              class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
-            >
-              <a
-                class="page-link"
-                href="?page=<%= currentPage + 1 %>"
-                aria-label="Next"
-              >
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <% } else { %>
-        <!-- No Recipes Found Message -->
-        <div class="alert alert-info" role="alert">
-          No recipes found.
-        </div>
-        <% } %>
+      </form>
     </div>
 
-    <script src="/public/js/loader.js"></script>
-  </body>
+    <!-- Loader -->
+    <div class="loader" id="loader"></div>
+    <h2 class="text-center mb-4">Featured Recipes</h2>
+
+    <% if (data && data.results && data.results.length > 0) { %>
+      <!-- Display Recipes -->
+      <div class="row" id="recipeContainer">
+        <% data.results.forEach(recipe => { %>
+          <div class="col-md-3 mb-4">
+            <!-- Recipe Card -->
+            <div class="card">
+            
+              <div class="image-container">
+                <img src="<%= recipe.thumbnail_url %>" class="card-img-top" alt="<%= recipe.name %>">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><%= recipe.name %></h5>
+                <p class="card-text">Description or details about the recipe.</p>
+                <a href="/recipe/<%= recipe.id %>" class="btn btn-primary">View Recipe</a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <!-- Pagination -->
+    <div class="pagination-container">
+      <nav aria-label="Recipe Pagination">
+        <ul class="pagination">
+          <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+            <a
+              class="page-link"
+              href="?page=<%= currentPage - 1 %>"
+              aria-label="Previous"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <% for (let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+          <% } %>
+          <li
+            class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
+          >
+            <a
+              class="page-link"
+              href="?page=<%= currentPage + 1 %>"
+              aria-label="Next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <% } else { %>
+     
+      <div class="alert alert-info" role="alert">
+        No recipes found.
+      </div>
+      <% } %>
+  </div>
+
+  <script src="/public/js/loader.js"></script>
+</body>
 </html>

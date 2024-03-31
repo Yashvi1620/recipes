@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
       // Sanitize the search query to prevent XSS exploits
       let searchQuery = xss(req.query.q) || "";
       let currentPage = parseInt(req.query.page) || 1;
-      const pageSize = 9;
+      const pageSize = 12;
   
       const options = {
         method: "GET",
@@ -64,35 +64,35 @@ app.get("/", async (req, res) => {
   });
   
 
-app.get("/recipe/:id", async (req, res) => {
-  try {
-    const recipeId = req.params.id;
-    const options = {
-      method: "GET",
-      url: `https://tasty.p.rapidapi.com/recipes/get-more-info?id=${recipeId}`,
-      headers: {
-        "X-RapidAPI-Key": "6202324d62msh19baa95b62cbbb3p172668jsnee482b887dbd",
-        "X-RapidAPI-Host": "tasty.p.rapidapi.com",
-      },
-    };
-
-    const response = await axios.request(options);
-    console.log(response.data);
-
-    if (response.data) {
-      const recipe = response.data;
-
-      res.render("recipe", { recipe: recipe });
-    } else {
-      console.error("API response did not contain data");
-      res.status(500).send("API response did not contain data");
+  app.get("/recipe/:id", async (req, res) => {
+    try {
+      const recipeId = req.params.id;
+      const options = {
+        method: "GET",
+        url: `https://tasty.p.rapidapi.com/recipes/get-more-info?id=${recipeId}`,
+        headers: {
+          "X-RapidAPI-Key": "6202324d62msh19baa95b62cbbb3p172668jsnee482b887dbd",
+          "X-RapidAPI-Host": "tasty.p.rapidapi.com",
+        },
+      };
+  
+      const response = await axios.request(options);
+      console.log(response.data);
+  
+      if (response.data) {
+        const recipe = response.data;
+  
+        res.render("recipe", { recipe: recipe });
+      } else {
+        console.error("API response did not contain data");
+        res.status(500).send("API response did not contain data");
+      }
+    } catch (error) {
+      console.error("Error fetching API:", error);
+      res.status(500).send("An error occurred while fetching data from the API");
     }
-  } catch (error) {
-    console.error("Error fetching API:", error);
-    res.status(500).send("An error occurred while fetching data from the API");
-  }
-});
-
-const server = app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+  });
+  
+  const server = app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+  });
