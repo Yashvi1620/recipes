@@ -1,52 +1,104 @@
-<!DOCTYPE html> 
-<html> 
-<head> 
-    <title>Home Page</title> 
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <!-- Bootstrap JavaScript requires jQuery -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Page</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
     <script src="/public/js/jquery.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="./css/style.css">
-</head> 
+    <link rel="stylesheet" href="./css/style.css" />
+    <style>
+      .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
 
-<body> 
+  <body>
     <div class="container mt-4">
-        <!-- Search Bar -->
-        <div class="search-bar-container"> <!-- Add search-bar-container class here -->
-            <form action="/" method="GET" class="mb-4" id="searchForm">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search for recipes..." aria-label="Search for recipes" value="<%= searchQuery %>">
-                    <button class="btn btn-primary" type="submit" id="searchButton">Search</button>
-                </div>
-            </form>
-        </div>
+      <!-- Search Bar -->
+      <div class="search-bar-container">
+        <form action="/" method="GET" class="mb-4" id="searchForm">
+          <div class="input-group">
+            <input
+              type="text"
+              name="q"
+              class="form-control"
+              placeholder="Search for recipes..."
+              aria-label="Search for recipes"
+              value="<%= searchQuery %>"
+            />
+            <button class="btn btn-primary" type="submit" id="searchButton">
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
 
-        <!-- Loader -->
-        <div class="loader" id="loader"></div>
+      <!-- Loader -->
+      <div class="loader" id="loader"></div>
 
-        <!-- Display Recipes -->
-        <% if (data && data.results) { %>
-            <div class="row" id="recipeContainer">
-                
-                <% data.results.forEach(recipe => { %>
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="<%= recipe.thumbnail_url %>" class="card-img-top" alt="<%= recipe.name %>">
-                            <div class="card-body">
-                                <h5 class="card-title"><%= recipe.name %></h5>
-                                <p class="card-text">Description or details about the recipe.</p>
-                                <!-- You can add more details about the recipe here -->
-                                <a  href="/recipe/<%= recipe.id %> " class="btn btn-primary">View Recipe</a>
-                            </div>
-                        </div>
-                    </div>
-                <% }); %>
+      <!-- Display Recipes -->
+      <% if (data && data.results) { %>
+      <div class="row" id="recipeContainer">
+        <% data.results.forEach(recipe => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img
+              src="<%= recipe.thumbnail_url %>"
+              class="card-img-top"
+              alt="<%= recipe.name %>"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= recipe.name %></h5>
+              <p class="card-text">Description or details about the recipe.</p>
+
+              <a href="/recipe/<%= recipe.id %>" class="btn btn-primary"
+                >View Recipe</a
+              >
             </div>
-        <% } else { %>
-            <p id="noRecipesMessage">No recipes found</p>
-        <% } %>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      <!-- Pagination -->
+      <div class="pagination-container">
+        <nav aria-label="Recipe Pagination">
+          <ul class="pagination">
+            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+              <a
+                class="page-link"
+                href="?page=<%= currentPage - 1 %>"
+                aria-label="Previous"
+              >
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+            <% } %>
+            <li
+              class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
+            >
+              <a
+                class="page-link"
+                href="?page=<%= currentPage + 1 %>"
+                aria-label="Next"
+              >
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <% } else { %>
+      <p id="noRecipesMessage">No recipes found</p>
+      <% } %>
     </div>
 
-    <script src="/public/js/loader.js"></script> <!-- Load JavaScript file for controlling loader -->
-</body> 
+    <script src="/public/js/loader.js"></script>
+  </body>
 </html>

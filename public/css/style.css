@@ -4,9 +4,9 @@ body {
 }
 
 .search-bar-container {
-  background-image: url('../images/Herbs\ and\ spices\ over\ black.jpeg'); /* Add background image */
-  background-size: cover; 
-  padding: 80px; 
+  background-image: url("../images/Herbs\ and\ spices\ over\ black.jpeg");
+  background-size: cover;
+  padding: 80px;
   margin-bottom: 40px;
 }
 
@@ -89,7 +89,7 @@ body {
   width: 50px;
   height: 50px;
   animation: spin 5s linear infinite;
-  display: none; /* Initially hidden */
+  display: none;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -97,6 +97,10 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
